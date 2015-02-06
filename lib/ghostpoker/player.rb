@@ -40,7 +40,7 @@ module Ghostpoker
     end
 
     def to_json
-      
+      { "name" => @name, "ip" => @ip, "money" => @money }.to_json 
     end
   end
 end
