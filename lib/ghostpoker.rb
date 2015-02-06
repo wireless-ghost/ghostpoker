@@ -1,4 +1,5 @@
 require 'ghostpoker/version'
+require 'ghostpoker/factory'
 require 'ghostpoker/card'
 require 'ghostpoker/deck'
 require 'ghostpoker/player'
