@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+# add some awesomness to these dumps
+require 'awesome_print'
+
+# add lib dir to load path to be able to require the source
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+# require the game
+require 'ghostpoker'
+
+# start new game
+game = Ghostpoker::Game.new
+game.start
+
