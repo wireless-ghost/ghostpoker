@@ -1,13 +1,15 @@
 module Ghostpoker
   class Deck
-    def initialize
-      @cards = []
-      Card::SUITS.each_byte do |suit|
-        Card::FACES.each_byte do |face|
-          @cards.push(Card.new(suit.chr, face.chr))
+    def initialize(cards = [])
+      @cards = cards
+      if @cards.length = 0
+        Card::SUITS.each_byte do |suit|
+          Card::VALUES.each_byte do |face|
+            @cards.push(Card.new(suit.chr, face.chr))
+          end
         end
+        shuffle
       end
-      shuffle
     end
 
     def shuffle

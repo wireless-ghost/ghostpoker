@@ -3,9 +3,15 @@ module Ghostpoker
     attr_accessor :name, :ip
     attr_reader :money, :poker_hand
 
-    def initialize(name, ip, money)
-      @name, @ip, @money = name, ip, money
-      @poker_hand = Poker_Hand.new
+    def initialize(player_hash)
+      @name       = player_hash[:name]
+      @ip         = player_hash[:ip]
+      @money      = player_hash[:money]
+      @poker_hand = poker_hand
+
+      if @poker_hand == nil
+        @poker_hand = Poker_Hand.new
+      end
     end
 
     def can_bet?
@@ -30,6 +36,10 @@ module Ghostpoker
 
     def add_money(amount)
       @money += amount
+    end
+
+    def to_json
+      
     end
   end
 end

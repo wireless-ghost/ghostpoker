@@ -3,8 +3,8 @@ module Ghostpoker
     include Comparable
 
     SUITS = "CHSD" # Clubs, Hearts, Spades, Diamonds
-    FACES = "23456789TJQKA"
-    FACE_VALUES = {
+    VALUES = "23456789TJQKA"
+    NUMBER_VALUES = {
       '2' => 2,
       '3' => 3, 
       '4' => 4,
@@ -30,36 +30,44 @@ module Ghostpoker
     attr_reader :suit, :face
 
     def value
-      FACE_VALUES[@face.upcase]
+      NUMBER_VALUES[@value.upcase]
     end
 
     def value=(new_value)
-      @face = new_value.to_s.upcase
+      @value = new_value.to_s.upcase
     end
 
     def to_s_ascii
-      @face + SUITS_ASCII[@suit]
+      @value + SUITS_ASCII[@suit]
     end
 
     def to_s
-      @face + @suit
+      @value + @suit
     end
 
     def <=> another_card
       self.value <=> another_card.value
     end
 
-    def initialize (suit, face)
-      if face.length == 1 && FACES.include?( face ) && face.length == 1 && SUITS.include?(suit.upcase)
-        @face = face
-        @suit = suit.upcase
+    def initialize (card_hash)
+      if VALUES.include?( card_hash[:value] ) && SUITS.include?(card_hash[:suit].upcase)
+        @value = card_hash[:value]
+        @suit = card_hash[:suit].upcase
       elsif
         puts "THIS CARD IS NOT VALID!"
       end
     end
 
     def to_json
-      {:card => (@face + @suit)}.to_json
+      { :card => {:suit => @suit, :value => @value} }.to_json
+    end
+
+    def parse_from_json(json_string)
+      card = JSON.parse json_string
+      if card["card"] != nil
+        @suit = card["card"]["suit"]
+        @value = card["card"]["face"]
+      end
     end
   end
 end

@@ -2,8 +2,11 @@ module Ghostpoker
   class Poker_Hand
     include Comparable
 
-    def initialize(cards = [])
-      @cards = cards
+    def initialize(poker_hand_hash = Hash.new)
+      @cards = poker_hand_hash[:cards]
+      if @cards == nil
+        @cards = []
+      end
     end
 
     HANDS = {
@@ -34,7 +37,7 @@ module Ghostpoker
       return true if @cards[0].value - 4 == @cards[4].value
       return true if @cards[1].value - 4 == @cards[5].value
       return true if @cards[2].value - 4 == @cards[6].value
-      if ace = @cards.select{ |card| card.value == Card::FACE_VALUES['A'] }.first
+      if ace = @cards.select{ |card| card.value == Card::NUMBER_VALUES['A'] }.first
         return true if @cards[3].value - 4 == 1
       end
       false
@@ -52,7 +55,7 @@ module Ghostpoker
     end
 
     def royal_flush?
-      straight? && flush? && high_card.value == Card::FACE_VALUES['A']
+      straight? && flush? && high_card.value == Card::NUMBER_VALUES['A']
     end
 
     def sort_by_values!
