@@ -1,7 +1,8 @@
 module Ghostpoker
   class Deck
-    def initialize(cards = [])
-      @cards = cards
+    extend Factory
+    def initialize(deck_hash)
+      @cards = deck_hash["cards"]
       if @cards.length = 0
         Card::SUITS.each_byte do |suit|
           Card::VALUES.each_byte do |face|

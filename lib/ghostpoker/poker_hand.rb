@@ -1,9 +1,10 @@
 module Ghostpoker
   class Poker_Hand
+    extend Factory
     include Comparable
 
     def initialize(poker_hand_hash = Hash.new)
-      @cards = poker_hand_hash[:cards]
+      @cards = poker_hand_hash["cards"]
       if @cards == nil
         @cards = []
       end

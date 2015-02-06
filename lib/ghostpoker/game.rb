@@ -1,5 +1,4 @@
 module Ghostpoker
-
   class Game
 
     def initialize
@@ -7,13 +6,13 @@ module Ghostpoker
     end
 
     def start
-      c1 = Card.new({ :value => 'J', :suit => 'c' })
-      c2 = Card.new({ :value => 'K', :suit => 'c' })
-      c3 = Card.new({ :value => 'Q', :suit => 'c' })
-      c4 = Card.new({ :value => 'T', :suit => 'c' })
-      c5 = Card.new({ :value => 'A', :suit => 'c' })
-      c6 = Card.new({ :value => '9', :suit => 'c' })
-      c7 = Card.new({ :value => '8', :suit => 'c' })
+      c1 = Card.new({ "value" => 'J', "suit" => 'c' })
+      c2 = Card.new({ "value" => 'K', "suit" => 'c' })
+      c3 = Card.new({ "value" => 'Q', "suit" => 'c' })
+      c4 = Card.new({ "value" => 'T', "suit" => 'c' })
+      c5 = Card.new({ "value" => 'A', "suit" => 'c' })
+      c6 = Card.new({ "value" => '9', "suit" => 'c' })
+      c7 = Card.new({ "value" => '8', "suit" => 'c' })
       ap "Card c1 has value #{c1.value} and it is represented as #{c1.to_s}"
       ap "Card c2 has value #{c2.value} and it is represented as #{c2.to_s}"
 
@@ -31,8 +30,8 @@ module Ghostpoker
       han << c6
       han << c7
 
-      hand = Poker_Hand.new({ :cards => han })
-      ap hand.high_card
+      hand = Poker_Hand.new({ "cards" => han })
+      ap hand.high_card.to_s
       ap hand.straight_flush?
       ap hand.straight?
       ap hand.flush?
@@ -42,9 +41,9 @@ module Ghostpoker
       ap c5.to_json
       
       #c8 = Card.parse_from_json c5.to_json
-      #ap c8.to_s
-
-      player = Player.new({ :name => 'Mad Max', :ip => "127.0.0.1", :money => 50 })
+      #ap c8.to_s5
+      ap 'batman'
+      player = Player.new({ "name" => 'Mad Max', "ip" => "127.0.0.1", "money" => 50 })
       #player.recieve_card c1
       #player.recieve_card c2
       #player.recieve_card c3
@@ -54,6 +53,9 @@ module Ghostpoker
       player.bet(20)
       ap player.broke?
       ap player.name
+      
+      card_with_get = Card.get(c5.to_json)
+      ap card_with_get.to_s
 
       #table = Table.new
     end

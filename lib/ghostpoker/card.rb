@@ -1,5 +1,6 @@
 module Ghostpoker
   class Card
+    extend Factory
     include Comparable
 
     SUITS = "CHSD" # Clubs, Hearts, Spades, Diamonds
@@ -50,24 +51,16 @@ module Ghostpoker
     end
 
     def initialize (card_hash)
-      if VALUES.include?( card_hash[:value] ) && SUITS.include?(card_hash[:suit].upcase)
-        @value = card_hash[:value]
-        @suit = card_hash[:suit].upcase
+      if VALUES.include?( card_hash["value"] ) && SUITS.include?(card_hash["suit"].upcase)
+        @value = card_hash["value"]
+        @suit = card_hash["suit"].upcase
       elsif
         puts "THIS CARD IS NOT VALID!"
       end
     end
 
     def to_json
-      { :card => {:suit => @suit, :value => @value} }.to_json
-    end
-
-    def parse_from_json(json_string)
-      card = JSON.parse json_string
-      if card["card"] != nil
-        @suit = card["card"]["suit"]
-        @value = card["card"]["face"]
-      end
+      {"suit" => @suit, "value" => @value}.to_json
     end
   end
 end
