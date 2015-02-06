@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Ghostpoker::VERSION
   spec.authors       = ["Veselin Rusinov"]
   spec.email         = ["v.russinov@gmail.com"]
-  spec.summary       = %q{Multiplayer console/GUI Texas Hold 'Em Poker}
+  spec.summary       = %q{Multiplayer Ruby console/GUI Texas Hold 'Em Poker}
   spec.description   = %q{}
   spec.homepage      = ""
   spec.license       = "MIT"
