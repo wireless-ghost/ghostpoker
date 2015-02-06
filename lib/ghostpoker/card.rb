@@ -59,7 +59,7 @@ module Ghostpoker
     end
 
     def to_json
-      {:card => (@face.to_s + @suit.to_s)}.to_json
+      {:card => (@face + @suit)}.to_json
     end
   end
 end
