@@ -38,6 +38,12 @@ module Ghostpoker
       client = Client.new(server, options[:name])
       server.run
     end
+
+    desc "game", "game"
+    def game
+      game = Game.new
+      game.start
+    end
   end
 end
 
