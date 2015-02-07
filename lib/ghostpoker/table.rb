@@ -6,29 +6,42 @@ module Ghostpoker
       :pre_flop => 0,
       :flop     => 1,
       :turn     => 2,
-      :river    => 3
+      :river    => 3,
+      :end      => 4
     }
 
     attr_accessor :deck, :dealed_cards, :pot, :minimum_bet
 
-    def initialize
+    def initialize(deck_hash)
       @deck = Deck.new
       @deck.shuffle
       @dealed_cards = Array.new
       @pot = 0
       @table_state = TABLE_STATES[:pre_flop]
-      @players = Array.new
-      @players.each  do |player|
-        player.recieve_card(@deck.deal_card)
-        player.recieve_card(@deck.deal_card)
-      end
+      #@players.each  do |player|
+      #  player.recieve_card(@deck.deal_card)
+      #  player.recieve_card(@deck.deal_card)
+      #end
     end
 
     def turn
       # before every card that is dealed to the table
       # one card should be dealed away
-      deal_card 0
-      deal_card
+      case(@table_state)
+      when TABLE_STATES[:pre_flop]
+        2.times do 
+          @players.each do |player|
+            player.recieve_card(@deck.deal_card)
+          end
+        end
+        @table_state = TABLE_STATES[:flop]
+      when TABLE_STATES[:end]
+        #do nothing   
+      else
+        deal_card 0
+        deal_card
+        @table_state += 1
+      end
     end
 
     def deal_card(add_to_dealed_cards = 1)
@@ -45,6 +58,11 @@ module Ghostpoker
     def clear
       @pot = 0
       @dealed_cards = Array.new
+    end
+
+    def add_player(player)
+      raise "Player with id:#{player.id} already exists" if @players.select{ |existing_player| existing_player.id == player.id}
+      @players.add player
     end
   end
 end

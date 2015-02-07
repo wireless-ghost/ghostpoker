@@ -11,6 +11,8 @@ module Ghostpoker
       send
       @request.join
       @response.join
+
+      player = Player.new({ "name" => @name, "ip" => "1234", "money" => 5000 })
     end
 
     def listen
@@ -25,7 +27,6 @@ module Ghostpoker
     def send
       @request = Thread.new do
         loop {
-          player = Player.new({ "name" => @name, "ip" => "1234", "money" => 5000 })
           msg = player.to_json
           @server.puts( msg )
         }
