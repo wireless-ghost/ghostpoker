@@ -28,6 +28,8 @@ module Ghostpoker
       'D' => '♦'
     }
 
+    REQUIRED_KEYS = %w(suit value)
+
     attr_reader :suit, :face
 
     def value
@@ -51,6 +53,7 @@ module Ghostpoker
     end
 
     def initialize (card_hash)
+      validate(card_hash)
       if VALUES.include?( card_hash["value"] ) && SUITS.include?(card_hash["suit"].upcase)
         @value = card_hash["value"]
         @suit = card_hash["suit"].upcase
