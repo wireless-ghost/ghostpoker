@@ -1,4 +1,5 @@
 module Ghostpoker
+
   class Game
 
     def initialize
@@ -30,7 +31,7 @@ module Ghostpoker
       han << c6
       han << c7
 
-      hand = Poker_Hand.new({ "cards" => han })
+      hand = PokerHand.new({ "cards" => han })
       ap hand.high_card.to_s
       ap hand.straight_flush?
       ap hand.straight?
@@ -53,6 +54,8 @@ module Ghostpoker
       player.bet(20)
       ap player.broke?
       ap player.name
+
+      ap "player id: #{player.id}"
       
       card_with_get = Card.get(c5.to_json)
       ap card_with_get.to_s

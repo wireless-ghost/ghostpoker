@@ -1,5 +1,7 @@
 module Ghostpoker
+
   class Client
+
     def initialize(server, name)
       @server = server
       @request = nil

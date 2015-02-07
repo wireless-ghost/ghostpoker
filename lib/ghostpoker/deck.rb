@@ -1,6 +1,9 @@
 module Ghostpoker
+
   class Deck
+
     extend Factory
+
     def initialize(deck_hash)
       @cards = deck_hash["cards"]
       if @cards.length = 0

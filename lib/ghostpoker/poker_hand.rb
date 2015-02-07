@@ -1,5 +1,7 @@
 module Ghostpoker
-  class Poker_Hand
+
+  class PokerHand
+    
     extend Factory
     include Comparable
 

@@ -1,7 +1,9 @@
 module Ghostpoker
+
   class Card
-    extend Factory
+
     include Comparable
+    extend Factory
 
     SUITS = "CHSD" # Clubs, Hearts, Spades, Diamonds
     VALUES = "23456789TJQKA"
@@ -32,6 +34,16 @@ module Ghostpoker
 
     attr_reader :suit, :face
 
+    def initialize (card_hash)
+      validate(card_hash)
+      if VALUES.include?( card_hash["value"] ) && SUITS.include?(card_hash["suit"].upcase)
+        @value = card_hash["value"]
+        @suit = card_hash["suit"].upcase
+      elsif
+        puts "THIS CARD IS NOT VALID!"
+      end
+    end
+
     def value
       NUMBER_VALUES[@value.upcase]
     end
@@ -50,16 +62,6 @@ module Ghostpoker
 
     def <=> another_card
       self.value <=> another_card.value
-    end
-
-    def initialize (card_hash)
-      validate(card_hash)
-      if VALUES.include?( card_hash["value"] ) && SUITS.include?(card_hash["suit"].upcase)
-        @value = card_hash["value"]
-        @suit = card_hash["suit"].upcase
-      elsif
-        puts "THIS CARD IS NOT VALID!"
-      end
     end
 
     def to_json

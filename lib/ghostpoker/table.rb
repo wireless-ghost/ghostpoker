@@ -1,5 +1,7 @@
 module Ghostpoker
+
   class Table
+
     TABLE_STATES = {
       :pre_flop => 0,
       :flop     => 1,
