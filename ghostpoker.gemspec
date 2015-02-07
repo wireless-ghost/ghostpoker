@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "gosu"
   spec.add_development_dependency "awesome_print"
+  spec.add_development_dependency "thor"
 end

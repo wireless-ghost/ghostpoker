@@ -16,8 +16,6 @@ module Ghostpoker
           ap player.name
           ap player.money
           @connections[:clients][player.money] = client
-          client.puts "Connection established, Thank you for joining! Happy Chatting!"
-          #listen_user_message(nick_name, client)
         end
       }.join
     end

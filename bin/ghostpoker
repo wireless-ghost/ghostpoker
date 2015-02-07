@@ -2,6 +2,7 @@
 
 # add some awesomness to these dumps
 require 'awesome_print'
+require 'thor'
 
 # add lib dir to load path to be able to require the source
 lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
@@ -9,8 +10,35 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
 # require the game
 require 'ghostpoker'
+module Ghostpoker
 
-# start new game
-game = Ghostpoker::Game.new
-game.start
+  class Cli < Thor
 
+    desc "server", "Starting new ghostpoker server"
+    option :ip, :required => true, :default => "localhost"
+    option :port, :required => true, :default => 3333
+    def server
+      output = []
+      output << "Staring server on #{options[:ip]}:#{options[:port]}"
+      output = output.join("\n")
+      puts output
+
+      # start new game
+      server = Server.new( options[:port], options[:ip] )
+      server.run
+    end
+
+    desc "client", "Starting new ghostpoker client"
+    option :ip, :required => true, :default => "localhost"
+    option :port, :required => true, :default => 3333
+    option :name, :defatult => "player"
+    def client
+      # start new game
+      server = TCPSocket.open(options[:ip], options[:port])
+      client = Client.new(server, options[:name])
+      server.run
+    end
+  end
+end
+
+Ghostpoker::Cli.start(ARGV)
