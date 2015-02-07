@@ -5,17 +5,27 @@ module Ghostpoker
       @server = TCPServer.open(ip, port)
       @connections = Hash.new
       @clients = Hash.new
-      @connections[:server] = @server
+      @players = Hash.new
+      @connections[:server]  = @server
       @connections[:clients] = @clients
+      @connections[:players] = @players
+      $mutex = Mutex.new
     end
 
     def run
       loop {
         Thread.start(@server.accept) do |client|
           player = Player.get client.gets
-          ap player.name
-          ap player.money
-          @connections[:clients][player.money] = client
+          $mutex.lock
+          @connections[:client].each do |other_name, other_client|
+            if other_name == player.name || other_client == client
+              client.puts "This username is already in use"
+              Thread.kill self
+            end
+          end
+          $mutex.unlock
+          @connections[:clients][player.name] = client
+          @connections[:players][player.name] = player
         end
       }.join
     end
