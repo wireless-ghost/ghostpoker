@@ -1,17 +1,21 @@
 module Ghostpoker
+
   class Player
+
     extend Factory
+
     attr_accessor :name, :ip
-    attr_reader :money, :poker_hand
+    attr_reader :money, :poker_hand, :id
 
     def initialize(player_hash)
       @name       = player_hash["name"]
       @ip         = player_hash["ip"]
       @money      = player_hash["money"]
       @poker_hand = player_hash["poker_hand"]
+      @id         = player_hash["id"] == nil ? SecureRandom.uuid : player_hash["id"]
 
       if @poker_hand == nil
-        @poker_hand = Poker_Hand.new
+        @poker_hand = PokerHand.new
       end
     end
 
@@ -40,7 +44,7 @@ module Ghostpoker
     end
 
     def to_json
-      { "name" => @name, "ip" => @ip, "money" => @money }.to_json 
+      { "name" => @name, "ip" => @ip, "money" => @money, "id" => @id }.to_json 
     end
   end
 end

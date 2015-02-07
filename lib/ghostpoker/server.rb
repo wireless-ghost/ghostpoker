@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby -w
 module Ghostpoker
+
   class Server
+
     def initialize(port, ip)
       @server = TCPServer.open(ip, port)
       @connections = Hash.new
@@ -9,23 +11,21 @@ module Ghostpoker
       @connections[:server]  = @server
       @connections[:clients] = @clients
       @connections[:players] = @players
-      $mutex = Mutex.new
     end
 
     def run
       loop {
         Thread.start(@server.accept) do |client|
           player = Player.get client.gets
-          $mutex.lock
-          @connections[:client].each do |other_name, other_client|
-            if other_name == player.name || other_client == client
+          @connections[:clients].each do |other_id, other_client|
+            if @connections[:players][other_id].name == player.name || other_client == client
               client.puts "This username is already in use"
               Thread.kill self
             end
           end
-          $mutex.unlock
-          @connections[:clients][player.name] = client
-          @connections[:players][player.name] = player
+          @connections[:clients][player.id] = client
+          @connections[:players][player.id] = player
+          ap "Player #{player.name} has been connected!"
         end
       }.join
     end

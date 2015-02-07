@@ -1,6 +1,7 @@
 require 'ghostpoker/version'
 require 'json'
 require 'socket'
+require 'securerandom'
 require 'ghostpoker/factory'
 require 'ghostpoker/card'
 require 'ghostpoker/deck'
