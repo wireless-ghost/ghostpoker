@@ -6,10 +6,11 @@ module Ghostpoker
 
     def initialize(deck_hash)
       @cards = deck_hash["cards"]
-      if @cards.length = 0
-        Card::SUITS.each_byte do |suit|
-          Card::VALUES.each_byte do |face|
-            @cards.push(Card.new(suit.chr, face.chr))
+      if @card == nil || @cards.lenght = 0
+        @cards = []
+        Card::SUITS.chars.each do |suit|
+          Card::VALUES.chars.each do |face|
+            @cards.push(Card.new({"suit" => suit, "value" =>face}))
           end
         end
         shuffle

@@ -41,7 +41,9 @@ module Ghostpoker
 
     def listen_user_message(username, client)
       loop {
-        msg = client.gets.chomp
+        new_player = Player.get client.gets.chomp
+        
+        ap new_player.action
         @connections[:clients].each do |other_id, other_client|
           puts @connections[:players][other_id].name
         end

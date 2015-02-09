@@ -11,6 +11,7 @@ require 'ghostpoker/table'
 require 'ghostpoker/game'
 require 'ghostpoker/server'
 require 'ghostpoker/client'
+require 'ghostpoker/consoleMode'
 
 module Ghostpoker
   # Your code goes here...

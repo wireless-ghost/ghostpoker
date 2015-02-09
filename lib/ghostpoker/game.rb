@@ -6,6 +6,16 @@ module Ghostpoker
 
     end
 
+    def console_mode
+      table = Table.new
+      console = ConsoleMode.new({ "table" => table })
+
+      console.start_game
+      console.player.recieve_card Card.new({ "value" => '9', "suit" => "d" })
+      console.print_table
+      console.print_table
+    end
+
     def start
       c1 = Card.new({ "value" => 'J', "suit" => 'c' })
       c2 = Card.new({ "value" => 'K', "suit" => 'c' })

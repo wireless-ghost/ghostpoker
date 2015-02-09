@@ -5,6 +5,8 @@ module Ghostpoker
     extend Factory
     include Comparable
 
+    attr_reader :cards
+
     def initialize(poker_hand_hash = Hash.new)
       @cards = poker_hand_hash["cards"]
       if @cards == nil

@@ -11,17 +11,16 @@ module Ghostpoker
     }
 
     attr_accessor :deck, :dealed_cards, :pot, :minimum_bet
+    attr_reader   :player_id_turn
 
-    def initialize(deck_hash)
-      @deck = Deck.new
+    def initialize
+      @deck = Deck.new Hash.new
       @deck.shuffle
       @dealed_cards = Array.new
       @pot = 0
       @table_state = TABLE_STATES[:pre_flop]
-      #@players.each  do |player|
-      #  player.recieve_card(@deck.deal_card)
-      #  player.recieve_card(@deck.deal_card)
-      #end
+      @players = Hash.new
+      @playing_players = Hash.new
     end
 
     def turn
@@ -29,6 +28,7 @@ module Ghostpoker
       # one card should be dealed away
       case(@table_state)
       when TABLE_STATES[:pre_flop]
+        @playing_players << @players
         2.times do 
           @players.each do |player|
             player.recieve_card(@deck.deal_card)
@@ -41,6 +41,27 @@ module Ghostpoker
         deal_card 0
         deal_card
         @table_state += 1
+      end
+    end
+
+    def loop_players
+      @players.each do |player|
+        player.turn
+        if player.action == Player::PLAYER_ACTION[:bet]
+          add_to_pot player.bet
+        elsif player.action == Player::PLAYER_ACTION[:fold]
+          fold_player player
+        elsif player.action == Player::PLAYER_ACTION[:raise]
+          add_to_pot player.bet         
+        elsif player.action == Player::PLAYER_ACTION[:check]
+
+        end
+      end
+    end
+
+    def fold_player(player)
+      if @playing_players.include? player
+        @playing_players.delete player
       end
     end
 

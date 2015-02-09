@@ -44,6 +44,12 @@ module Ghostpoker
       game = Game.new
       game.start
     end
+
+    desc "console", "console"
+    def console
+      game = Game.new
+      game.console_mode
+    end
   end
 end
 
