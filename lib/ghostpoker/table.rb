@@ -19,19 +19,22 @@ module Ghostpoker
       @dealed_cards = Array.new
       @pot = 0
       @table_state = TABLE_STATES[:pre_flop]
-      @players = Hash.new
-      @playing_players = Hash.new
+      @players = Array.new
+      @playing_players = Array.new
     end
 
     def turn
       # before every card that is dealed to the table
       # one card should be dealed away
+      if @table_state == nil 
+        @table_state = TABLE_STATES[:pre_flop]
+      end
       case(@table_state)
       when TABLE_STATES[:pre_flop]
-        @playing_players << @players
+        @playing_players.push @players
         2.times do 
           @players.each do |player|
-            player.recieve_card(@deck.deal_card)
+            player.recieve_card(@deck.deal)
           end
         end
         @table_state = TABLE_STATES[:flop]
@@ -82,8 +85,10 @@ module Ghostpoker
     end
 
     def add_player(player)
-      raise "Player with id:#{player.id} already exists" if @players.select{ |existing_player| existing_player.id == player.id}
-      @players.add player
+      if @players == nil
+        @players = Array.new
+      end
+      @players.push player
     end
   end
 end

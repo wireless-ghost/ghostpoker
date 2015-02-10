@@ -19,7 +19,6 @@ module Ghostpoker
 
     def shuffle
       @cards = @cards.sort_by { rand }
-      return self
     end
 
     def deal

@@ -31,6 +31,8 @@ module Ghostpoker
       player_hash["ip"]    = ip
 
       @player = Player.new player_hash
+
+      @table.add_player @player
     end
 
     def wait_for_action
@@ -68,6 +70,8 @@ module Ghostpoker
     end
 
     def turn
+      @table.turn
+      print_table
     end
   end
 end
