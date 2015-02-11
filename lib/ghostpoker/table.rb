@@ -11,7 +11,7 @@ module Ghostpoker
     }
 
     attr_accessor :deck, :dealed_cards, :pot, :minimum_bet
-    attr_reader   :player_id_turn
+    attr_reader   :player_id_turn, :players
 
     def initialize
       @deck = Deck.new Hash.new
@@ -36,6 +36,9 @@ module Ghostpoker
           @players.each do |player|
             player.recieve_card(@deck.deal)
           end
+        end
+        @players.each do |player|
+          player.turn
         end
         @table_state = TABLE_STATES[:flop]
       when TABLE_STATES[:end]

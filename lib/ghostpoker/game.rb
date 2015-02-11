@@ -11,7 +11,15 @@ module Ghostpoker
       console = ConsoleMode.new({ "table" => table })
 
       console.start_game
+      player1 = Player.new ({ "name" => "Batman", "money" => 1000, "ip" => "123" })
+      player2 = Player.new ({ "name" => "Han Solo", "money" => 500, "ip" => "222" })
+      console.table.add_player player1
+      console.table.add_player player2
       console.turn
+
+      server = TCPSocket.open("localhost", "3333")
+      client = Client.new(server, @player)
+      #server.run
       #console.player.recieve_card Card.new({ "value" => '9', "suit" => "d" })
       #console.print_table
       #console.print_table

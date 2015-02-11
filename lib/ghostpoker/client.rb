@@ -2,23 +2,21 @@ module Ghostpoker
 
   class Client
 
-    def initialize(server, name)
+    def initialize(server)
       @server = server
       @request = nil
       @response = nil
-      @name = name
       listen
       send
       @request.join
       @response.join
-
-      player = Player.new({ "name" => @name, "ip" => "1234", "money" => 5000 })
+      @player
     end
 
     def listen
       @response = Thread.new do
         loop {
-          msg = @server.gets.chomp
+          @player = Player.get @server.gets.chomp
           puts "#{msg}"
         }
       end
@@ -27,7 +25,7 @@ module Ghostpoker
     def send
       @request = Thread.new do
         loop {
-          msg = player.to_json
+          msg = @player.to_json
           @server.puts( msg )
         }
       end

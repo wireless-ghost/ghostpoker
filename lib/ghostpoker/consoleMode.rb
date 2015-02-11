@@ -2,7 +2,7 @@ module Ghostpoker
 
   class ConsoleMode
 
-    attr_accessor :player
+    attr_accessor :player, :table
     def initialize(state_hash)
       @table = state_hash["table"]
       @player = state_hash["player"]
@@ -37,13 +37,14 @@ module Ghostpoker
 
     def wait_for_action
       puts "Possible actions:"
-      puts "1. Bet"
+      puts "1. Bet (max: #{@player.money})"
       puts "2. Check"
       puts "3. Fold"
       puts
       puts "Please, enter the number of the selected action :"
 
       selected_action = STDIN.gets.chomp
+      selected_action
     end
 
     def print_cards(cards)
@@ -53,19 +54,36 @@ module Ghostpoker
       puts
     end
 
+    def print_other_players
+      @table.players.each do |player|
+        if player != @player
+          puts "Player #{player.name} has cards: "
+          print_cards player.poker_hand.cards
+          puts "and money: #{player.money}"
+          puts
+        end
+      end
+    end
+
     def print_table
       if @table != nil
         puts "The dealed cards are: "
         print_cards @table.dealed_cards
       end
 
+      print_other_players
+
       puts "Your cards are: "
       print_cards @player.poker_hand.cards
 
-      action = wait_for_action
-      if action == 1
-        amount = bet_amount
-        puts amount
+      puts
+
+      if @player.my_turn == 1
+        action = wait_for_action
+        if action.to_i == 1
+          amount = bet_amount
+          puts amount
+        end
       end
     end
 
