@@ -87,6 +87,7 @@ module Ghostpoker
       table.add_player player
       table.add_player player1
       table.pot = 100
+      table.turn
       ap b = table.to_json
       tab = Table.get b
     end
