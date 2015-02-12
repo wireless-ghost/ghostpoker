@@ -32,7 +32,11 @@ module Ghostpoker
 
       @player = Player.new player_hash
 
+      server = TCPSocket.open( "localhost", 3333)
+      @client = Client.new( server, player )
+
       @table.add_player @player
+      
     end
 
     def wait_for_action

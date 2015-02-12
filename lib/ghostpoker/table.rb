@@ -2,6 +2,8 @@ module Ghostpoker
 
   class Table
 
+    extend Factory
+
     TABLE_STATES = {
       :pre_flop => 0,
       :flop     => 1,
@@ -13,7 +15,7 @@ module Ghostpoker
     attr_accessor :deck, :dealed_cards, :pot, :minimum_bet
     attr_reader   :player_id_turn, :players
 
-    def initialize
+    def initialize(deck_hash)
       @deck = Deck.new Hash.new
       @deck.shuffle
       @dealed_cards = Array.new
@@ -21,6 +23,14 @@ module Ghostpoker
       @table_state = TABLE_STATES[:pre_flop]
       @players = Array.new
       @playing_players = Array.new
+      if deck_hash != nil
+        @deck = Deck.get deck_hash["deck"]
+        #@dealed_cards = deck_hash["dealed_cards"]
+       # @pot = deck_hash["pot"]
+        #@table_state = deck_hash["table_state"]
+        #@players = deck_hash["players"]
+        #@playing_player = deck_hash["playing_players"]
+      end
     end
 
     def turn
@@ -92,6 +102,42 @@ module Ghostpoker
         @players = Array.new
       end
       @players.push player
+    end
+
+    def players_to_json
+      a = ""
+      if @players != nil && @players.length > 0
+        @players.each do |player|
+          a += player.to_json
+        end
+      end
+      a
+    end
+
+    def cards_to_json
+      result = ""
+      if @dealed_cards != nil && @dealed_cards.length > 0
+        @cards.each do |card|
+          result += card.to_json
+        end
+      end
+      result
+    end
+
+    def cards_from_json
+      @cards = Array.new
+
+    end
+
+    def to_json
+      { 
+        "deck"            => @deck.to_json, 
+        "player"          => @player.to_json, 
+        "pot"             => @pot, 
+        "dealed_cards"    => cards_to_json, 
+        "table_state"     => @table_state, 
+        "playing_players" => players_to_json
+      }.to_json
     end
   end
 end
