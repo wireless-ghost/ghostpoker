@@ -2,10 +2,9 @@ module Ghostpoker
 
   class ConsoleMode
 
-    attr_accessor :player, :table
-    def initialize(state_hash)
-      @table = state_hash["table"]
-      @player = state_hash["player"]
+    attr_accessor
+    def initialize
+      ap "batman"
     end
 
     def bet_amount
@@ -14,7 +13,8 @@ module Ghostpoker
       amount.to_i
     end
 
-    def start_game
+    def init_player
+      ap "init player"
       player_hash = Hash.new
 
       puts "Please, enter username: "
@@ -30,25 +30,19 @@ module Ghostpoker
       player_hash["money"] = money
       player_hash["ip"]    = ip
 
-      @player = Player.new player_hash
-
-      server = TCPSocket.open( "localhost", 3333)
-      @client = Client.new( server, player )
-
-      @table.add_player @player
-      
+      player_hash
     end
 
     def wait_for_action
       puts "Possible actions:"
-      puts "1. Bet (max: #{@player.money})"
+      puts "1. Bet"
       puts "2. Check"
       puts "3. Fold"
       puts
       puts "Please, enter the number of the selected action :"
 
       selected_action = STDIN.gets.chomp
-      selected_action
+      selected_action 
     end
 
     def print_cards(cards)
@@ -58,9 +52,9 @@ module Ghostpoker
       puts
     end
 
-    def print_other_players
-      @table.players.each do |player|
-        if player != @player
+    def print_other_players( table, current_player)
+      table.players.each do |player|
+        if player != current_player
           puts "Player #{player.name} has cards: "
           print_cards player.poker_hand.cards
           puts "and money: #{player.money}"
@@ -69,20 +63,20 @@ module Ghostpoker
       end
     end
 
-    def print_table
-      if @table != nil
+    def print_table( table, current_player )
+      if table != nil
         puts "The dealed cards are: "
-        print_cards @table.dealed_cards
+        print_cards table.dealed_cards
       end
 
       print_other_players
 
       puts "Your cards are: "
-      print_cards @player.poker_hand.cards
+      print_cards current_player.poker_hand.cards
 
       puts
 
-      if @player.my_turn == 1
+      if current_player.my_turn == 1
         action = wait_for_action
         if action.to_i == 1
           amount = bet_amount
@@ -91,9 +85,5 @@ module Ghostpoker
       end
     end
 
-    def turn
-      @table.turn
-      print_table
-    end
   end
 end

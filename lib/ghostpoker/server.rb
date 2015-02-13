@@ -10,7 +10,7 @@ module Ghostpoker
       @players = Hash.new
       @connections[:clients] = @clients
       @connections[:players] = @players
-      @table = Table.new
+      @table = Table.new Hash.new
     end
 
     def check_for_empty_seats
@@ -20,7 +20,16 @@ module Ghostpoker
     def run
       loop {
         Thread.start(@server.accept) do |client|
-          player = Player.get client.gets
+          client.puts @table.to_json
+          while (hash = client.gets) == nil
+          end
+          ap "recieved #{hash}"
+          if hash != nil && hash.length > 0
+            player = Player.get hash
+            @table.add_player player
+            @table.turn
+          end
+=begin
           if !check_for_empty_seats
             client.puts "All seats have been taken! Exiting..."
             Thread.kill self
@@ -31,6 +40,7 @@ module Ghostpoker
               Thread.kill self
             end
           end
+=end
           @connections[:clients][player.id] = client
           @connections[:players][player.id] = player
           ap "Player #{player.name} has been connected!"
@@ -41,12 +51,16 @@ module Ghostpoker
 
     def listen_user_message(username, client)
       loop {
+        #@table.turn
+        ap "sending table from server"
+        ap username
+        client.puts @table.to_json
         new_player = Player.get client.gets.chomp
         
-        ap new_player.action
-        @connections[:clients].each do |other_id, other_client|
-          puts @connections[:players][other_id].name
-        end
+        ap new_player.name
+        #@connections[:clients].each do |other_id, other_client|
+        #  puts @connections[:players][other_id].name
+        #end
       }
     end
   end

@@ -36,7 +36,6 @@ module Ghostpoker
       # start new game
       server = TCPSocket.open(options[:ip], options[:port])
       client = Client.new(server, options[:name])
-      server.run
     end
 
     desc "game", "game"

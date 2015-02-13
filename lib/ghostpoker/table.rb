@@ -22,6 +22,7 @@ module Ghostpoker
       @pot = 0
       @table_state = TABLE_STATES[:pre_flop]
       @players = Array.new
+      ap "player init #{deck_hash}"
       if deck_hash != nil
         @deck = Deck.get deck_hash["deck"]
         dealed_cards_from_json deck_hash["dealed_cards"]
@@ -32,24 +33,29 @@ module Ghostpoker
     end
 
     def turn
-      # before every card that is dealed to the table
-      # one card should be dealed away
+      ap "table turn"
       if @table_state == nil 
         @table_state = TABLE_STATES[:pre_flop]
       end
       case(@table_state)
       when TABLE_STATES[:pre_flop]
+        ap "pre flop:"
+        ap @players.length
         2.times do 
           @players.each do |player|
+            ap "dealing cards"
             card = @deck.deal 
             player.recieve_card card
             @dealed_cards << card
           end
         end
         @players.each do |player|
-          player.turn
+          if player.playing == 1
+            player.my_turn = 1
+          end
         end
         @table_state = TABLE_STATES[:flop]
+        ap "batman"
       when TABLE_STATES[:end]
         #do nothing   
       else
@@ -57,28 +63,13 @@ module Ghostpoker
         deal_card
         @table_state += 1
       end
-    end
-
-    def loop_players
-      @players.each do |player|
-        player.turn
-        if player.action == Player::PLAYER_ACTION[:bet]
-          add_to_pot player.bet
-        elsif player.action == Player::PLAYER_ACTION[:fold]
-          fold_player player
-        elsif player.action == Player::PLAYER_ACTION[:raise]
-          add_to_pot player.bet         
-        elsif player.action == Player::PLAYER_ACTION[:check]
-
-        end
-      end
+      ap "exiting table turn"
     end
 
     def fold_player(player)
-      if @playing_players.include? player
-        @playing_players.delete player
-      end
+      player.turn = Player::PLAYER_ACTION[:not_playing]
     end
+    ap @players
 
     def deal_card(add_to_dealed_cards = 1)
       if !@deck.empty?

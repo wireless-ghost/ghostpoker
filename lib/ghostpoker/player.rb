@@ -8,7 +8,8 @@ module Ghostpoker
       :big_blind => 0, 
       :small_blind => 1,
       :button => 2, 
-      :regular => 3
+      :regular => 3,
+      :not_playing => 4
     }
 
     PLAYER_ACTION = {
@@ -19,7 +20,7 @@ module Ghostpoker
     }
 
     attr_accessor :name, :ip, :turn, :action, :bet, :my_turn
-    attr_reader :money, :poker_hand, :id
+    attr_reader :money, :poker_hand, :id, :playing
 
     def initialize(player_hash)
       @name       = player_hash["name"]
@@ -33,6 +34,7 @@ module Ghostpoker
       if @poker_hand == nil
         @poker_hand = PokerHand.new
       end
+      @playing = 1
     end
 
     def can_bet?
@@ -46,6 +48,10 @@ module Ghostpoker
         @money -= amount
       end
       @my_turn = 0
+    end
+
+    def action( selected_action )
+      @action = selected_action
     end
 
     def won(amount)
@@ -62,6 +68,7 @@ module Ghostpoker
 
     def fold
       @my_turn = 0
+      @playing = 0
     end
 
     def add_money(amount)
